@@ -12,16 +12,6 @@ const loadData = props => {
 }
 
 class RepoPage extends Component {
-  static propTypes = {
-    repo: PropTypes.object,
-    fullName: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    owner: PropTypes.object,
-    stargazers: PropTypes.array.isRequired,
-    stargazersPagination: PropTypes.object,
-    loadRepo: PropTypes.func.isRequired,
-    loadStargazers: PropTypes.func.isRequired
-  }
 
   componentWillMount() {
     loadData(this.props)
