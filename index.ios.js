@@ -13,9 +13,7 @@ const store = configureStore();
 class StaffTracker extends Component {
     render() {
         return (
-            <View style={styles.container}>
-                <Root store={store} />
-            </View>
+            <Root />
         );
     }
 }

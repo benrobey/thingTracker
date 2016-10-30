@@ -1,31 +1,49 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes, Component } from 'react'
 import {
     AppRegistry,
     StyleSheet,
+    Navigator,
     Text,
     View,
     DeviceEventEmitter,
     ListView
 } from 'react-native';
 import { Provider } from 'react-redux'
-import { Router, Actions } from 'react-native-router-flux'
-import scenes from '../routes'
-import Button from 'react-native-button'
-import { Container, Header, Title, Content } from 'native-base';
+import { Router, Scene } from 'react-native-router-flux'
 import BeaconList from '../components/BeaconList'
+import User from '../components/User'
+import Home from '../components/Home'
+import configureStore from '../store/configureStore'
 
-var region = {
-    identifier: 'Estimotes',
-    uuid: '61687109-905F-4436-91F8-E602F514C96D'
-};
 
-var Root = ({ history }) => (
-    <Container>
-        <Router scenes={scenes}/>
-        <Content>
-            <BeaconList></BeaconList>
-        </Content>
-    </Container>
-)
+const store = configureStore();
+
+
+class Root extends Component {
+    render() {
+        return (
+            <ProviderWrapper />
+        )
+    }
+}
+
+var ProviderWrapper = React.createClass({
+    render: function() {
+        return (
+            <Provider store={store}>
+                <Router navigationBarStyle={{backgroundColor: '#1e2226', flex:1 ,alignSelf: 'stretch', clear:'both'}}  titleStyle={{color : "#FFF"}}>
+                    <Scene key="root">
+                        <Scene key="home" component={Home} title ="Home" initial />
+                        <Scene key="pressUser" component={User} title="My Details" />
+                        <Scene key="beaconList" component={BeaconList} title="Viewing Beacons" />
+                    </Scene>
+                </Router>
+            </Provider>
+        );
+    }
+});
+
+
+
 
 export default Root

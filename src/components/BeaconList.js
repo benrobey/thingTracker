@@ -7,29 +7,13 @@ import {
     DeviceEventEmitter,
     ListView
 } from 'react-native';
-import { createStore } from 'redux'
 import configureStore from '../store/configureStore'
+import { Actions } from 'react-native-router-flux';
 
-
+import { createStore } from 'redux'
 let store = createStore(configureStore)
 
 var Beacons = require('react-native-ibeacon');
-
-
-Beacons.requestWhenInUseAuthorization();
-
-var region = {
-  identifier: 'Estimotes',
-  uuid: '61687109-905F-4436-91F8-E602F514C96D'
-};
-
-// Request for authorization while the app is open
-Beacons.requestWhenInUseAuthorization();
-
-// Range for beacons inside the region
-Beacons.startRangingBeaconsInRegion(region);
-
-Beacons.startUpdatingLocation();
 
 var styles = StyleSheet.create({
   container: {
@@ -37,6 +21,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+      marginTop:50
   },
   headline: {
     fontSize: 20,
@@ -75,20 +60,34 @@ var BeaconView = React.createClass({
 var BeaconList = React.createClass({
   getInitialState: function() {
     return {
-      dataSource: ds.cloneWithRows([]),
+        dataSource: ds.cloneWithRows([]),
+        region: this.region,
+        test: this.props.test
     };
   },
 
-  componentWillMount: function() {
-    // Listen for beacon changes
+
+    componentDidMount: function() {
+    // Request for authorization while the app is open
+      Beacons.requestWhenInUseAuthorization();
+
+    // Range for beacons inside the region
+      Beacons.startRangingBeaconsInRegion({
+          identifier: 'Estimotes',
+          uuid: '61687109-905F-4436-91F8-E602F514C96D'
+      });
+
+      Beacons.startUpdatingLocation();
+
     var subscription = DeviceEventEmitter.addListener(
         'beaconsDidRange',
         (data) => {
           // Set the dataSource state with the whole beacon data
           // We will be rendering all of it through <BeaconView />
-          this.setState({
-            dataSource: ds.cloneWithRows(data.beacons)
-          });
+            this.setState({
+                dataSource: ds.cloneWithRows(data.beacons),
+                test: data.beacons
+            });
         }
     );
   },
@@ -101,6 +100,7 @@ var BeaconList = React.createClass({
     return (
         <View style={styles.container}>
           <Text style={styles.headline}>All beacons in the area</Text>
+            <Text onPress={Actions.pressUser}>User Page</Text>
           <ListView
               dataSource={this.state.dataSource}
               renderRow={this.renderRow}

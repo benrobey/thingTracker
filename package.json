@@ -8,23 +8,22 @@
     "build": "react-scripts build"
   },
   "devDependencies": {
-    "react-scripts": "^0.6.0",
+    "react-scripts": "^0.7.0",
     "redux-logger": "^2.6.1",
-    "remote-redux-devtools": "^0.4.9"
+    "remote-redux-devtools": "^0.5.1"
   },
   "dependencies": {
-    "humps": "^1.1.0",
+    "humps": "^2.0.0",
     "lodash": "^4.16.1",
     "native-base": "^0.5.9",
     "normalizr": "^2.2.1",
     "react": "15.3.2",
-    "react-dom": "^15.3.2",
-    "react-native": "0.34.1",
-    "react-native-button": "^1.7.1",
+    "react-native": "0.36.0",
     "react-native-elements": "^0.6.2",
     "react-native-ibeacon": "^0.6.0",
-    "react-native-router-flux": "^3.35.0",
+    "react-native-router-flux": "^3.36.0",
     "react-native-simple-store": "^1.0.1",
+    "react-native-vector-icons": "^3.0.0",
     "react-redux": "^4.4.5",
     "react-router-redux": "^4.0.6",
     "redux": "^3.5.2",

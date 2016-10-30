@@ -1,24 +1,21 @@
 import React, { PropTypes } from 'react'
+import {
+    AppRegistry,
+    StyleSheet,
+    Text,
+    View,
+    DeviceEventEmitter,
+    ListView
+} from 'react-native';
+
 
 const User = ({ user }) => {
-  const { login, avatarUrl, name } = user
-
   return (
-    <div className="User">
-        <img src={avatarUrl} alt={login} width="72" height="72" />
-        <h3>
-          {login} {name && <span>({name})</span>}
-        </h3>
-    </div>
+    <View>
+        <Text>sdfsdf</Text>
+    </View>
   )
 }
 
-User.propTypes = {
-  user: PropTypes.shape({
-    login: PropTypes.string.isRequired,
-    avatarUrl: PropTypes.string.isRequired,
-    name: PropTypes.string
-  }).isRequired
-}
 
 export default User

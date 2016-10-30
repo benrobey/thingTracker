@@ -1,14 +1,14 @@
 import { CALL_API, Schemas } from '../middleware/api'
 
-export const USER_REQUEST = 'USER_REQUEST'
-export const USER_SUCCESS = 'USER_SUCCESS'
-export const USER_FAILURE = 'USER_FAILURE'
+export const BEACON_EVENT_REQUEST = 'BEACON_EVENT_REQUEST'
+export const BEACON_EVENT_SUCCESS = 'BEACON_EVENT_SUCCESS'
+export const BEACON_EVENT_FAILURE = 'BEACON_EVENT_FAILURE'
 
 // Fetches a single user from Github API.
 // Relies on the custom API middleware defined in ../middleware/api.js.
-const fetchUser = login => ({
+const postBeaconEvent = event => ({
   [CALL_API]: {
-    types: [ USER_REQUEST, USER_SUCCESS, USER_FAILURE ],
+    types: [ BEACON_EVENT_REQUEST, BEACON_EVENT_SUCCESS, BEACON_EVENT_FAILURE ],
     endpoint: `users/${login}`,
     schema: Schemas.USER
   }
