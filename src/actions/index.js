@@ -1,18 +1,26 @@
-import { CALL_API, Schemas } from '../middleware/api'
+import { CALL_API, Schemas, httpget, httppost } from '../middleware/api'
 
 export const BEACON_EVENT_REQUEST = 'BEACON_EVENT_REQUEST'
 export const BEACON_EVENT_SUCCESS = 'BEACON_EVENT_SUCCESS'
 export const BEACON_EVENT_FAILURE = 'BEACON_EVENT_FAILURE'
 
-// Fetches a single user from Github API.
-// Relies on the custom API middleware defined in ../middleware/api.js.
-const postBeaconEvent = event => ({
+const postEvent = event => ({
   [CALL_API]: {
     types: [ BEACON_EVENT_REQUEST, BEACON_EVENT_SUCCESS, BEACON_EVENT_FAILURE ],
-    endpoint: `users/${login}`,
-    schema: Schemas.USER
+    endpoint: `event`,
+    schema: Schemas.USER,
+    httpverb: httppost,
+    payload: event
   }
 })
+
+export const sendEventToApi = event => (dispatch) => {
+  return dispatch(postEvent(event))
+}
+
+export const postBeaconEvent = event => {
+  return {type: BEACON_EVENT_REQUEST, event}
+}
 
 // Fetches a single user from Github API unless it is cached.
 // Relies on Redux Thunk middleware.

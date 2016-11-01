@@ -1,44 +1,59 @@
 import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
 
-// Extracts the next page URL from Github API response.
-const getNextPageUrl = response => {
-  const link = response.headers.get('link')
-  if (!link) {
-    return null
-  }
-
-  const nextLink = link.split(',').find(s => s.indexOf('rel="next"') > -1)
-  if (!nextLink) {
-    return null
-  }
-
-  return nextLink.split(';')[0].slice(1, -1)
-}
 
 const API_ROOT = 'http://52.63.205.80';
 
+export const httppost = 'POST';
+export const httpget = 'GET';
+
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
-const callApi = (endpoint, schema) => {
+const callApi = (endpoint, schema, httpverb = httpget, payload) => {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
 
-  return fetch(fullUrl)
-    .then(response =>
-      response.json().then(json => ({ json, response }))
-    ).then(({ json, response }) => {
-      if (!response.ok) {
-        return Promise.reject(json)
+  switch (httpverb) {
+    case httpget: {
+      return fetch(fullUrl)
+          .then(response =>
+              response.json().then(json => ({ json, response }))
+          ).then(({ json, response }) => {
+            if (!response.ok) {
+              return Promise.reject(json)
+            }
+
+            const camelizedJson = camelizeKeys(json)
+
+            return Object.assign({},
+                normalize(camelizedJson, schema))
+          })
       }
+    case httppost: {
+      return fetch(fullUrl, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      })
+          .then(response =>
+              response.json().then(json => ({ json, response }))
+          ).then(({ json, response }) => {
+            if (!response.ok) {
+              return Promise.reject(json)
+            }
 
-      const camelizedJson = camelizeKeys(json)
-      const nextPageUrl = getNextPageUrl(response)
+            const camelizedJson = camelizeKeys(json)
 
-      return Object.assign({},
-        normalize(camelizedJson, schema),
-        { nextPageUrl }
-      )
-    })
+            return Object.assign({},
+                normalize(camelizedJson, schema))
+          })
+    }
+
+  }
+
+
 }
 
 // We use this Normalizr schemas to transform API responses from a nested form

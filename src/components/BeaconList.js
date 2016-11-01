@@ -5,13 +5,12 @@ import {
     Text,
     View,
     DeviceEventEmitter,
-    ListView
+    ListView,
+    ScrollView
 } from 'react-native';
-import configureStore from '../store/configureStore'
 import { Actions } from 'react-native-router-flux';
-
-import { createStore } from 'redux'
-let store = createStore(configureStore)
+import { connect } from 'react-redux'
+import * as actionCreators from '../actions'
 
 var Beacons = require('react-native-ibeacon');
 
@@ -20,8 +19,8 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-      marginTop:50
+    backgroundColor: '#fff',
+      marginTop:100
   },
   headline: {
     fontSize: 20,
@@ -55,14 +54,17 @@ var BeaconView = React.createClass({
   }
 });
 
+
 // The BeaconList component listens for changes and re-renders the
 // rows (BeaconView components) in that case
 var BeaconList = React.createClass({
+
   getInitialState: function() {
     return {
         dataSource: ds.cloneWithRows([]),
         region: this.region,
-        test: this.props.test
+        test: this.props.test,
+        beacons: {}
     };
   },
 
@@ -88,6 +90,10 @@ var BeaconList = React.createClass({
                 dataSource: ds.cloneWithRows(data.beacons),
                 test: data.beacons
             });
+            if(data.beacons[0]) {
+                this.props.postBeaconEvent(data.beacons);
+                this.props.sendEventToApi(data.beacons);
+            }
         }
     );
   },
@@ -99,15 +105,21 @@ var BeaconList = React.createClass({
   render: function() {
     return (
         <View style={styles.container}>
-          <Text style={styles.headline}>All beacons in the area</Text>
-            <Text onPress={Actions.pressUser}>User Page</Text>
-          <ListView
+            <ScrollView>
+                <Text>{JSON.stringify(this.props.beacons)}</Text>
+            </ScrollView>
+            <Text style={styles.headline}>All beacons in the area</Text>
+            <ListView
               dataSource={this.state.dataSource}
               renderRow={this.renderRow}
-          />
+            />
         </View>
     );
   },
 });
 
-export default BeaconList
+const mapStateToProps = (state, ownProps) => {
+    return { beacons: state.beacons }
+}
+
+export default connect(mapStateToProps, actionCreators ) (BeaconList)

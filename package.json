@@ -19,6 +19,7 @@
     "normalizr": "^2.2.1",
     "react": "15.3.2",
     "react-native": "0.36.0",
+    "react-native-drawer": "^2.3.0",
     "react-native-elements": "^0.6.2",
     "react-native-ibeacon": "^0.6.0",
     "react-native-router-flux": "^3.36.0",

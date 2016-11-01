@@ -18,16 +18,24 @@ import configureStore from '../store/configureStore'
 
 const store = configureStore();
 
+class TabIcon extends React.Component {
+    render(){
+        return (
+            <Text style={{color: this.props.selected ? 'red' :'black'}}>{this.props.title}</Text>
+        );
+    }
+}
+
 
 class Root extends Component {
     render() {
         return (
-            <ProviderWrapper />
+            <RouterWrapper />
         )
     }
 }
 
-var ProviderWrapper = React.createClass({
+var RouterWrapper = React.createClass({
     render: function() {
         return (
             <Provider store={store}>
@@ -42,8 +50,5 @@ var ProviderWrapper = React.createClass({
         );
     }
 });
-
-
-
 
 export default Root
