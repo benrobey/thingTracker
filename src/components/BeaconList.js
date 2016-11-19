@@ -9,6 +9,7 @@ import {
     ScrollView
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import { FormLabel, FormInput, Card, List, ListItem, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 import * as actionCreators from '../actions'
 
@@ -81,33 +82,41 @@ var BeaconList = React.createClass({
 
       Beacons.startUpdatingLocation();
 
-    var subscription = DeviceEventEmitter.addListener(
-        'beaconsDidRange',
-        (data) => {
-          // Set the dataSource state with the whole beacon data
-          // We will be rendering all of it through <BeaconView />
-            this.setState({
-                dataSource: ds.cloneWithRows(data.beacons),
-                test: data.beacons
-            });
-            if(data.beacons[0]) {
-                this.props.postBeaconEvent(data.beacons);
-                this.props.sendEventToApi(data.beacons);
+        var subscription = DeviceEventEmitter.addListener(
+            'beaconsDidRange',
+            (data) => {
+                // Set the dataSource state with the whole beacon data
+                // We will be rendering all of it through <BeaconView />
+                this.setState({
+                    dataSource: ds.cloneWithRows(data.beacons),
+                    test: data.beacons
+                });
+                if(data.beacons[0]) {
+                    this.props.postBeaconEvent(data.beacons);
+                }
             }
-        }
-    );
+        );
   },
 
   renderRow: function(rowData) {
     return <BeaconView {...rowData} style={styles.row} />
   },
 
-  render: function() {
+    pageUp: function() {
+        //this.props.postBeaconEvent({type: 'sdfsdf'})
+        console.log('sdfsdf')
+    },
+
+    render: function() {
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView style={{height: 10}}>
                 <Text>{JSON.stringify(this.props.beacons)}</Text>
             </ScrollView>
+            <Button
+                title="Button thing"
+                onPress={this.props.sendEventToApi.bind(this, {type: 'sdfsfd'})}
+            />
             <Text style={styles.headline}>All beacons in the area</Text>
             <ListView
               dataSource={this.state.dataSource}

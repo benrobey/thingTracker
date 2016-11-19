@@ -11,12 +11,18 @@ const initialState = {
 function beacons(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.BEACON_EVENT_REQUEST:
+    {
       return Object.assign({}, state, {
         beacons: [
-      ...state.beacons,
-      action.event
-    ]
+          ...state.beacons,
+          action.event
+        ]
       })
+    }
+    case ActionTypes.BEACON_POST_REQUEST:
+    {
+      return state;
+    }
     default:
       return state
   }

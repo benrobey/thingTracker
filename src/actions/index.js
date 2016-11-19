@@ -1,12 +1,12 @@
 import { CALL_API, Schemas, httpget, httppost } from '../middleware/api'
 
-export const BEACON_EVENT_REQUEST = 'BEACON_EVENT_REQUEST'
-export const BEACON_EVENT_SUCCESS = 'BEACON_EVENT_SUCCESS'
-export const BEACON_EVENT_FAILURE = 'BEACON_EVENT_FAILURE'
+export const BEACON_POST_REQUEST = 'BEACON_POST_REQUEST'
+export const BEACON_POST_SUCCESS = 'BEACON_POST_SUCCESS'
+export const BEACON_POST_FAILURE = 'BEACON_POST_FAILURE'
 
-const postEvent = event => ({
+export const postEvent = event => ({
   [CALL_API]: {
-    types: [ BEACON_EVENT_REQUEST, BEACON_EVENT_SUCCESS, BEACON_EVENT_FAILURE ],
+    types: [ BEACON_POST_REQUEST, BEACON_POST_SUCCESS, BEACON_POST_FAILURE ],
     endpoint: `event`,
     schema: Schemas.USER,
     httpverb: httppost,
@@ -15,8 +15,12 @@ const postEvent = event => ({
 })
 
 export const sendEventToApi = event => (dispatch) => {
+  console.log('=======@ TEST @========')
   return dispatch(postEvent(event))
 }
+
+
+export const BEACON_EVENT_REQUEST = 'BEACON_EVENT_REQUEST'
 
 export const postBeaconEvent = event => {
   return {type: BEACON_EVENT_REQUEST, event}
